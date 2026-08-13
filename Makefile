@@ -1,4 +1,4 @@
-.PHONY: help install dev-install format lint type-check security check-all clean pre-commit setup-dev dev viewer wheel tui-build tui-test tui-lint
+.PHONY: help install dev-install format lint type-check security check-all clean pre-commit setup-dev dev viewer wheel tui-build tui-test tui-lint toolbox-test toolbox-selftest
 
 TUI_BINARY := build/sidecar/strix-tui$(if $(filter Windows_NT,$(OS)),.exe)
 
@@ -93,3 +93,11 @@ tui-test:
 
 tui-lint:
 	cd strix/interface/tui && test -z "$$(gofmt -l .)" && go vet ./...
+
+toolbox-test:
+	uv run pytest tests/toolbox -q
+
+toolbox-selftest:
+	env -u OPENAI_API_KEY -u ANTHROPIC_API_KEY -u GOOGLE_API_KEY \
+		-u GEMINI_API_KEY -u LLM_API_KEY -u OPENROUTER_API_KEY -u STRIX_LLM \
+		uv run strix-toolbox --self-test

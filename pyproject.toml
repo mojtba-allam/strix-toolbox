@@ -1,7 +1,7 @@
 [project]
-name = "strix-agent"
+name = "strix-toolbox"
 version = "1.5.3"
-description = "Open-source AI Hackers for your apps"
+description = "Independent fork of Strix: no-LLM security toolbox for Cursor MCP"
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.12"
@@ -17,6 +17,8 @@ keywords = [
   "agent",
   "ai",
   "cli",
+  "mcp",
+  "toolbox",
 ]
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -48,6 +50,7 @@ dependencies = [
   # Cap <49: 49.x drops the universal2 macOS wheel (arm64-only), which breaks
   # the Intel macOS (macos-x86_64) release build's `uv sync --frozen`.
   "cryptography>=48.0.1,<49",
+  "mcp>=1.9.0",
   "pyyaml>=6.0",
 ]
 
@@ -57,6 +60,7 @@ bedrock = ["boto3>=1.28.0"]
 
 [project.scripts]
 strix = "strix.interface.main:main"
+strix-toolbox = "strix.toolbox.cli:main"
 
 [dependency-groups]
 dev = [
@@ -230,8 +234,39 @@ ignore = [
 # args they intentionally ignore.
 "tests/test_viewer_auth.py" = ["S105", "S106", "ARG001"]
 "tests/test_codex_auth.py" = ["S105", "S106", "SLF001"]
-# Hatchling loads the build hook by path, not as an importable package.
-"scripts/tui_sidecar_hook.py" = ["INP001"]
+"strix/toolbox/**/*.py" = [
+  "PLC0415",
+  "TC002",
+  "TC003",
+  "ARG001",
+  "ARG002",
+  "PLR0911",
+  "PLR0912",
+  "PLR0915",
+  "S310",
+  "S108",
+  "T20",
+  "E501",
+  "PERF401",
+  "C416",
+  "ICN001",
+  "FBT003",
+  "N801",
+]
+"tests/toolbox/**/*.py" = [
+  "S101",
+  "S105",
+  "S106",
+  "ARG001",
+  "ARG002",
+  "PLC0415",
+  "T20",
+  "A002",
+  "A003",
+  "E501",
+  "TC003",
+  "N802",
+]
 # Stdlib HTTP handler overrides (do_GET/do_POST).
 "strix/interface/auth_cli.py" = ["N802"]
 "tests/test_codex_streaming.py" = ["N802"]
